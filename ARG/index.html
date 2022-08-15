@@ -1,0 +1,1000 @@
+<!DOCTYPE html>
+<head>
+    <link rel="stylesheet" href="http://pcr.phillips66.net/env/bootstrap.min.css">
+    <title>PCR Analyzer Reliability</title>
+    <style>
+    
+    .sec{
+        display:flex;
+        justify-content: center;
+        
+    }
+
+    </style>
+</head>
+<body>
+    <div><button class="btn btn-primary" id="new" style="margin-left:5px">New Log/Cyl</button></div>
+    <div id="selarea" style="display:none">
+        <h1>Select Area</h1>
+        <div class="custom-control custom-radio custom-control-inline">
+            <input class="custom-control-input" type="radio" name="radio" id="CCA" value="CCA" onchange="radioCheck()">
+            <label class="custom-control-label" for="CCA">CCA</label>
+        </div>
+        <div class="custom-control custom-radio custom-control-inline">
+            <input class="custom-control-input" type="radio" name="radio" id="NP" value="NP" onchange="radioCheck()">
+            <label class="custom-control-label" for="NP">NP</label>
+        </div>
+        <div class="custom-control custom-radio custom-control-inline">
+            <input class="custom-control-input" type="radio" name="radio" id="WP" value="WP" onchange="radioCheck()">
+            <label class="custom-control-label" for="WP">WP</label>
+        </div>
+        <div class="custom-control custom-radio custom-control-inline">
+            <input class="custom-control-input" type="radio" name="radio" id="EP" value="EP" onchange="radioCheck()">
+            <label class="custom-control-label" for="EP">EP</label>
+        </div>
+        <div class="custom-control custom-radio custom-control-inline">
+            <input class="custom-control-input" type="radio" name="radio" id="SP" value="SP" onchange="radioCheck()">
+            <label class="custom-control-label" for="SP">SP</label>
+        </div>
+    </div>
+    <br><br>
+
+    <div id="cyldiv" style="display:none">
+        <h1>New Cal Cylinder</h1>
+        <form action="/cyl" method="post">
+            <div class="form-row col-12" id="innercyldiv">
+                <div class="form-group col-sm-2">
+                    <label for="CEMSCyl">Select CEMS</label> 
+                    <select id="CEMSCyl" name="CEMSCyl" class="form-control" onchange="plcHld(); btuCheck();" required>
+                        <option disabled selected value="">CEMS</option>
+                    </select>
+                </div>               
+                <div class="form-group col-sm-1">
+                    <label for="conc">Concentration</label>
+                    <input autocomplete="off" name="conc" id="conc" placeholder="Conc. (ppm or %)" type="number" step="0.1" class="form-control" required>
+                </div>     
+                <div class="form-group col-1">
+                    <label for="cyl">Cyl. ID</label>
+                    <input autocomplete="off" name="cyl" id="cyl" placeholder="CC12345..." type="text" class="form-control" required>
+                </div>      
+                <div class="form-group col-auto">
+                        <label for="exp">Exp. Date</label>
+                        <input autocomplete="off" name="exp" id="exp" type="date" class="form-control" required>
+                </div>
+                <div class="form-group col-auto">
+                    <label for="inst">Install Date</label>
+                    <input autocomplete="off" name="inst" id="inst" type="date" class="form-control" required>
+                </div>
+                <div class="form-group col-1">
+                    <label for="techcyl">Tech. Initials</label>
+                    <input autocomplete="off" name="techcyl" placeholder="Initials" type="text" class="form-control" required>
+                </div><br>
+            </div>
+            <div class="form-row col-12" id="btudvH2"></div>
+            <div class="form-row col-12" id="btudvMethane"></div>
+            <div class="form-row col-12" id="btudvEthane"></div>
+            <div class="form-row col-12" id="btudvEthylene"></div>
+            <div class="form-row col-12" id="btudvPropane"></div>
+            <div class="form-row col-12" id="btudvPropylene"></div>
+            <div class="form-row col-12" id="btudvButane"></div>
+            <div class="form-row col-12" id="btudvIsobutane"></div>
+            <div class="form-row col-12" id="btudvIsobutylene"></div>
+            <div class="form-row col-12" id="btudvPentane"></div>
+            <div class="form-row col-12" id="btudvN2"></div>
+            <div class="form-row col-12" id="btudvCO"></div>
+            <div class="form-row col-12" id="btudvCO2"></div>
+
+            
+            <div class="form-row col-3">
+            <input type="submit" value="Submit" class="btn btn-primary">
+            </div>
+        </form>
+    </div>
+    <br><br>
+    <div id="maintlogdiv" style="display:none">
+        <h1>Maintenance Log</h1>
+        <form action="/maint" method="post">
+            <div class="form-row col-12">
+                <div class="form-group col-sm-2">
+                    <label for="CEMSMaint">Select CEMS</label> 
+                    <select id="CEMSMaint" name="CEMSMaint" class="form-control" >
+                        <option disabled selected value="">CEMS</option>
+                    </select>
+                </div>
+                <div class="form-group col-auto">
+                        <label for="maintdt">Date</label>
+                        <input autocomplete="off" name="maintdt" id="maintdt" type="date" class="form-control" required>
+                </div>
+                <div class="form-group col-auto">
+                        <label for="maintstrt">Start</label>
+                        <input autocomplete="off" name="maintstrt" id="maintstrt" type="time" class="form-control" required>
+                </div>
+                <div class="form-group col-auto">
+                        <label for="maintend">End</label>
+                        <input autocomplete="off" name="maintend" id="maintend" type="time" class="form-control" required>
+                </div>
+                <div class="form-group col-sm-1">
+                    <label for="techmaint">Tech. Initials</label>
+                    <input autocomplete="off" name="techmaint" placeholder="Initials" type="text" class="form-control" required>
+                </div>
+            </div>
+            <div class="form-row col-6">
+                <label for="maintLog">Maintenance Log</label>
+                <textarea class="form-control" name="maintlog" id="maintLog" rows="3"></textarea>
+            </div>
+            <div class="form-row col-3">
+            <input type="submit" value="Submit" class="btn btn-primary" style="margin-top:10px">
+            </div>
+        </form> 
+    </div>
+    <br>
+    <div id="div2">
+        <button class="btn btn-primary" id="editcyl" style="margin-left:5px">Edit Cylinder</button>
+        <button class="btn btn-primary" id="editlog" style="margin-left:5px">Edit Log</button>
+    </div>
+
+    <div id="cyleditform" style="display:none">
+        <form action="/cyledit" method="post">
+            <div class="form-row col-12">
+                
+                <input name="idcyledit" id="idcyledit" type="hidden" class="form-control">
+                
+                <div class="form-group col-sm-2">
+                    <label for="CEMSCyledit">Select CEMS</label> 
+                    <select id="CEMSCyledit" name="CEMSCyledit" class="form-control">
+                        <option disabled selected value="">ID</option>
+                    </select>
+                </div>
+                <div class="form-group col-1">
+                    <label for="cylidedit">Cyl. ID</label>
+                    <input autocomplete="off" name="cylidedit" id="cylidedit" placeholder="CC12345..." type="text" class="form-control" required>
+                </div>
+                <div class="form-group col-auto">
+                    <label for="concedit">Concentration</label>
+                    <input autocomplete="off" name="concedit" id="concedit" placeholder="Conc. (ppm or %)" type="number" step="0.1" class="form-control" required>
+                </div>           
+                <div class="form-group col-auto">
+                        <label for="expedit">Exp. Date</label>
+                        <input autocomplete="off" name="expedit" id="expedit" type="text" class="form-control" required>
+                </div>
+                <div class="form-group col-auto">
+                    <label for="instedit">Install Date</label>
+                    <input autocomplete="off" name="instedit" id="instedit" type="text" class="form-control" required>
+                </div>
+                <div class="form-group col-1">
+                    <label for="techcyledit">Tech. Initials</label>
+                    <input autocomplete="off" name="techcyledit" id="techcyledit" placeholder="Initials" type="text" class="form-control" required>
+                </div>
+            </div>
+            <div class="form-row col-3">
+            <input type="submit" value="Submit Edits" class="btn btn-success">
+            </div>
+        </form>
+    </div>
+    <div id="logeditform" style="display:none">
+        <form action="/logedit" method="post">
+            <div class="form-row col-12">
+                
+                <input name="idlogedit" id="idlogedit" type="hidden" class="form-control">
+              
+                <div class="form-group col-sm-2">
+                    <label for="CEMSMaintedit">Select CEMS</label> 
+                    <select id="CEMSMaintedit" name="CEMSMaintedit" class="form-control" >
+                        <option disabled selected value="">CEMS</option>
+                    </select>
+                </div>
+                <div class="form-group col-auto">
+                    <label for="maintdtedit">Date</label>
+                    <input autocomplete="off" name="maintdtedit" id="maintdtedit" type="text" class="form-control" required>
+                </div>
+                <div class="form-group col-auto">
+                    <label for="maintstrtedit">Start</label>
+                    <input autocomplete="off" name="maintstrtedit" id="maintstrtedit" type="text" class="form-control" required>
+                </div>
+                <div class="form-group col-auto">
+                    <label for="maintendedit">End</label>
+                    <input autocomplete="off" name="maintendedit" id="maintendedit" type="text" class="form-control" required>
+                </div>
+                <div class="form-group col-sm-1">
+                    <label for="techmaintedit">Tech. Initials</label>
+                    <input autocomplete="off" name="techmaintedit" id="techmaintedit" placeholder="Initials" type="text" class="form-control" required>
+                </div>
+            </div>
+            <div class="form-row col-6">
+                    <label for="maintlogedit">Maintenance Log</label>
+                    <textarea class="form-control" name="maintlogedit" id="maintlogedit" rows="3"></textarea>
+            </div>
+            <div class="form-row col-3">
+                <input type="submit" value="Submit Edits" class="btn btn-success" style="margin-top:10px">
+            </div>
+             
+        </form>
+    </div>
+    <div id="div3"></div>
+
+    <div id="cylbtndiv" style="display:none; margin-top:5px;">
+        <button id="showinst" class="btn btn-dark btn-sm">Show Installed Cylinders</button>
+        <button id="showall" class="btn btn-dark btn-sm">Show All Cylinders</button>
+        <button id="hidecyl" class="btn btn-dark btn-sm">Hide Cylinders</button>
+    </div>
+    <div id="logbtndiv" style="display:none; margin-top:5px;">
+        <button id="showlog" class="btn btn-dark btn-sm">Show Last 100 Log Entires</button>
+        <button id="showalllog" class="btn btn-dark btn-sm">Show All Log Entires</button>        
+        <button id="hidelog" class="btn btn-dark btn-sm">Hide Log</button>
+    </div>
+    <div id="instcyl" class="sec" style="display:none; margin-left:10px;">
+        <table class="table table-sm"> 
+            <thead>
+                <tr>
+                    <th>Delete?</th>
+                    <th>Edit?</th>
+                    <th>Record ID</th>
+                    <th>CEMS</th>
+                    <th>Cylinder ID</th>
+                    <th>Concentration</th>
+                    <th>Install Date</th>
+                    <th>Exp. Date</th>
+                    <th>Technician</th>
+                </tr>
+            </thead>
+            <tbody>
+        {% for row in cyltbl %}
+                <tr>
+                    <td><form action="/cyldel" method="POST"><input type="hidden" name="delcyl" value="{{row["id"]}}"><input class="btn btn-danger btn-sm" type="submit" value="Delete" onclick="checkFirst()"></form></td>
+                    <td align="center"><input type="radio" name="allcylradio" value="{{row["id"]}}" onclick="fillCyl('{{row["id"]}}', '{{row["cems"]}}', '{{row["cylid"]}}', '{{row["conc"]}}', '{{row["inst"]}}', '{{row["exp"]}}', '{{row["tech"]}}')"></td>   
+                    <td>{{row["id"]}}</td>
+                    <td>{{row["cems"]}}</td>
+                    <td>{{row["cylid"]}}</td>
+                    <td>{{row["conc"]}}</td>
+                    <td>{{row["inst"]}}</td>
+                    <td>{{row["exp"]}}</td>
+                    <td>{{row["tech"]}}</td>
+                </tr>
+        {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    
+    <div id="allcyl" class="sec" style="display:none; margin-left:10px;">
+        <table class="table table-sm">
+            <thead>
+                <tr>
+                    <th>Delete?</th>
+                    <th>Edit?</th>
+                    <th>Record ID</th>
+                    <th>CEMS</th>
+                    <th>Cylinder ID</th>
+                    <th>Concentration</th>
+                    <th>Install Date</th>
+                    <th>Exp. Date</th>
+                    <th>Technician</th>
+                </tr>
+            </thead>
+            <tbody>
+        {% for row in allcyl %}
+                <tr>
+                    <td><form action="/cyldel" method="POST"><input type="hidden" name="delcyl" value="{{row["id"]}}"><input class="btn btn-danger btn-sm" type="submit" value="Delete" onclick="checkFirst()"></form></td>
+                    <td align="center"><input type="radio" name="allcylradio" value="{{row["id"]}}" onclick="fillCyl('{{row["id"]}}', '{{row["cems"]}}', '{{row["cylid"]}}', '{{row["conc"]}}', '{{row["inst"]}}', '{{row["exp"]}}', '{{row["tech"]}}')"></td>   
+                    <td>{{row["id"]}}</td>
+                    <td>{{row["cems"]}}</td>
+                    <td>{{row["cylid"]}}</td>
+                    <td>{{row["conc"]}}</td>
+                    <td>{{row["inst"]}}</td>
+                    <td>{{row["exp"]}}</td>
+                    <td>{{row["tech"]}}</td>
+                </tr>
+        {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div id="hunlog" class="sec" style="display:none; margin-left:10px;">
+        <table class="table table-sm">
+            <thead>
+                <tr>
+                    <th>Delete?</th>
+                    <th>Edit?</th>
+                    <th>ID</th>
+                    <th>CEMS</th>
+                    <th>Date</th>
+                    <th>Start</th>
+                    <th>End</th>
+                    <th>Tech</th>
+                    <th>Log</th>
+                </tr>
+            </thead>
+            <tbody>
+        {% for row in hunlog %}
+                <tr id="row{{row["id"]}}">
+                    <td><form action="/logdel" method="POST"><input type="hidden" name="dellog" value="{{row["id"]}}"><input class="btn btn-danger btn-sm" type="submit" value="Delete" onclick="checkFirst()"></form></td>
+                    <td align="center"><input type="radio" name="hunlogradio" value="{{row["id"]}}" onclick='fillLog("{{row["id"]}}", "{{row["anal"]}}", "{{row["dt"]}}", "{{row["strt"]}}", "{{row["end"]}}", "{{row["tech"]}}", "{{row["log"]}}")'></td>
+                    <td>{{row["id"]}}</td>
+                    <td>{{row["anal"]}}</td>
+                    <td>{{row["dt"]}}</td>
+                    <td>{{row["strt"]}}</td>
+                    <td>{{row["end"]}}</td>
+                    <td>{{row["tech"]}}</td>
+                    <td>{{row["log"]}}</td>
+                </tr>
+        {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div id="alllog" class="sec" style="display:none; margin-left:10px;">
+        <table class="table table-sm">
+            <thead>
+                <tr>
+                    <th>Delete?</th>
+                    <th>Edit?</th>
+                    <th>ID</th>
+                    <th style="width:100px">CEMS</th>
+                    <th style="width:100px">Date</th>
+                    <th style="width:100px">Start</th>
+                    <th style="width:100px">End</th>
+                    <th>Tech</th>
+                    <th>Log</th>
+                </tr>
+            </thead>
+            <tbody>
+        {% for row in alllog %}
+                <tr id="row{{row["id"]}}">
+                    <td><form action="/logdel" method="POST" style="margin-block-end: .2em"><input type="hidden" name="dellog" value="{{row["id"]}}"><input class="btn btn-danger btn-sm" type="submit" value="Delete" onclick="checkFirst()"></form></td>
+                    <td align="center"><input type="radio" name="alllogradio" value="{{row["id"]}}" onclick="fillLog('{{row["id"]}}', '{{row["anal"]}}', '{{row["dt"]}}', '{{row["strt"]}}', '{{row["end"]}}', '{{row["tech"]}}', '{{row["log"]}}')"></td>
+                    <td>{{row["id"]}}</td>
+                    <td style="width:100px">{{row["anal"]}}</td>
+                    <td style="width:100px">{{row["dt"]}}</td>
+                    <td style="width:100px">{{row["strt"]}}</td>
+                    <td style="width:100px">{{row["end"]}}</td>
+                    <td>{{row["tech"]}}</td>
+                    <td>{{row["log"]}}</td>
+                </tr>
+        {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        var install = document.getElementById("inst");
+        var maintdt = document.getElementById("maintdt");
+        var month = new Date().getMonth() + 1;
+        var year = new Date().getFullYear();
+        var day = new Date().getDate();
+        if (day < 10) {
+            day = "0" + day;
+        }
+        if (month < 10) {
+            month = "0" + month;
+        }
+
+        var today = year + "-" + month + "-" + day;
+        var CEMSCyl = document.getElementById("CEMSCyl");
+        var CEMSMaint = document.getElementById("CEMSMaint");
+        var anal = document.getElementById("anal");
+       
+        function plcHld() {
+            if (CEMSCyl.value.includes("O2")) {
+                document.getElementById("conc").placeholder = "Enter Conc. (%)";
+            }
+            else {
+                document.getElementById("conc").placeholder = "Enter Conc. (ppm)";
+            }
+        }
+
+        function radioCheck() {
+            $('#cyldiv').show("fast");
+            $('#maintlogdiv').show("fast");
+          
+
+
+            install.value = today;
+            maintdt.value = today;
+            var i = 0;
+            while (CEMSCyl.options.length > 1) {
+                    CEMSCyl.remove(1);
+                    i++;
+            }
+            while (CEMSMaint.options.length > 1) {
+                    CEMSMaint.remove(1);
+                    i++;
+            }
+
+            if (document.getElementById("CCA").checked) {
+                CEMSCyl.options[1] = new Option('CCA Flare H2S', 'CCA Flare H2S');
+                CEMSCyl.options[2] = new Option('CCA Flare TRS', 'CCA Flare TRS');
+                CEMSCyl.options[3] = new Option('H-48 NOx', 'H-48 NOx');
+                CEMSCyl.options[4] = new Option('H-48 CO', 'H-48 CO');
+                CEMSCyl.options[5] = new Option('H-48 O2', 'H-48 O2');
+                CEMSCyl.options[6] = new Option('H-60 NOx', 'H-60 NOx');
+                CEMSCyl.options[7] = new Option('H-60 CO', 'H-60 CO');
+                CEMSCyl.options[8] = new Option('H-60 O2', 'H-60 O2');
+                CEMSCyl.options[9] = new Option('2Ref FG H2S', '2Ref FG H2S');
+                CEMSCyl.options[10] = new Option('Alky FG H2S', 'Alky FG H2S');
+                CEMSCyl.options[11] = new Option('Coker FG H2S', 'Coker FG H2S');
+                CEMSCyl.options[12] = new Option('Combo FG H2S', 'Combo FG H2S');
+                CEMSCyl.options[13] = new Option('CCA Flare BTU', 'CCA Flare BTU');
+                CEMSMaint.options[1] = new Option('CCA Flare', 'CCA Flare');
+                CEMSMaint.options[2] = new Option('H-48', 'H-48');
+                CEMSMaint.options[3] = new Option('H-60', 'H-60');
+                CEMSMaint.options[4] = new Option('2Ref FG', '2Ref FG');
+                CEMSMaint.options[5] = new Option('Alky FG', 'Alky FG');
+                CEMSMaint.options[6] = new Option('Coker FG', 'Coker FG');
+                CEMSMaint.options[7] = new Option('Combo FG', 'Combo FG');
+            }
+            else if (document.getElementById("NP").checked) {
+                CEMSCyl.options[1] = new Option('B-8 NOx', 'B-8 NOx');
+                CEMSCyl.options[2] = new Option('B-8 CO', 'B-8 CO');
+                CEMSCyl.options[3] = new Option('B-8 O2', 'B-8 O2');
+                CEMSCyl.options[4] = new Option('B-9-10 NOx', 'B-9-10 NOx');
+                CEMSCyl.options[5] = new Option('B-9-10 CO', 'B-9-10 CO');
+                CEMSCyl.options[6] = new Option('B-9-10 O2', 'B-9-10 O2');
+                CEMSCyl.options[7] = new Option('H-9301 NOx', 'H-9301 NOx');
+                CEMSCyl.options[8] = new Option('H-9301 O2', 'H-9301 O2');
+                CEMSCyl.options[9] = new Option('H-9851 CO', 'H-9851 CO');
+                CEMSCyl.options[10] = new Option('H-9851 O2', 'H-9851 O2');
+                CEMSCyl.options[11] = new Option('NP Flare H2S', 'NP Flare H2S');
+                CEMSCyl.options[12] = new Option('NP Flare TRS', 'NP Flare TRS');
+                CEMSCyl.options[13] = new Option('NP Flare BTU', 'NP Flare BTU');
+                CEMSMaint.options[1] = new Option('B-8', 'B-8');
+                CEMSMaint.options[2] = new Option('B-9-10', 'B-9-10');
+                CEMSMaint.options[3] = new Option('H-9301', 'H-9301');
+                CEMSMaint.options[4] = new Option('H-9851', 'H-9851');
+                CEMSMaint.options[5] = new Option('NP Flare', 'NP Flare');
+            }
+            else if (document.getElementById("WP").checked) {
+                CEMSCyl.options[1] = new Option('H-1 NOx', 'H-1 NOx');
+                CEMSCyl.options[2] = new Option('H-1 CO', 'H-1 CO');
+                CEMSCyl.options[3] = new Option('H-1 O2', 'H-1 O2');
+                CEMSCyl.options[4] = new Option('H-16 CO', 'H-16 CO');
+                CEMSCyl.options[5] = new Option('H-16 O2', 'H-16 O2');
+                CEMSCyl.options[6] = new Option('WP FG H2S', 'WP FG H2S');    
+                CEMSMaint.options[1] = new Option('H-1', 'H-1');
+                CEMSMaint.options[2] = new Option('H-16', 'H-16');
+                CEMSMaint.options[3] = new Option('WP FG', 'WP FG');
+            }
+            else if (document.getElementById("EP").checked) {
+                CEMSCyl.options[1] = new Option('4FCC NOx', '4FCC NOx');
+                CEMSCyl.options[2] = new Option('4FCC CO', '4FCC CO');
+                CEMSCyl.options[3] = new Option('4FCC SO2', '4FCC SO2');
+                CEMSCyl.options[4] = new Option('4FCC O2', '4FCC O2');
+                CEMSCyl.options[5] = new Option('EP FG H2S', 'EP FG H2S');
+                CEMSCyl.options[6] = new Option('H-6007 NOx', 'H-6007 NOx');
+                CEMSCyl.options[7] = new Option('H-6007 CO', 'H-6007 CO');
+                CEMSCyl.options[8] = new Option('H-6007 O2', 'H-6007 O2');
+                CEMSCyl.options[9] = new Option('H-6015 NOx', 'H-6015 NOx');
+                CEMSCyl.options[10] = new Option('H-6015 CO', 'H-6015 CO');
+                CEMSCyl.options[11] = new Option('H-6015 O2', 'H-6015 O2');
+                CEMSCyl.options[12] = new Option('EP Flare H2S', 'EP Flare H2S');
+                CEMSCyl.options[13] = new Option('EP Flare TRS', 'EP Flare TRS');
+                CEMSCyl.options[14] = new Option('EP Flare BTU', 'EP Flare BTU');
+                CEMSMaint.options[1] = new Option('4FCC', '4FCC');
+                CEMSMaint.options[2] = new Option('EP FG', 'EP FG');
+                CEMSMaint.options[3] = new Option('H-6007', 'H-6007');
+                CEMSMaint.options[4] = new Option('H-6015', 'H-6015');
+                CEMSMaint.options[5] = new Option('EP Flare', 'EP Flare');
+            }
+            else if (document.getElementById("SP").checked) {
+                CEMSCyl.options[1] = new Option('5FCC NOx', '5FCC NOx');
+                CEMSCyl.options[2] = new Option('5FCC CO', '5FCC CO');
+                CEMSCyl.options[3] = new Option('5FCC SO2', '5FCC SO2');
+                CEMSCyl.options[4] = new Option('5FCC O2', '5FCC O2');
+                CEMSCyl.options[5] = new Option('SP FG H2S', 'SP FG H2S');
+                CEMSCyl.options[6] = new Option('H-5002 NOx', 'H-5002 NOx');
+                CEMSCyl.options[7] = new Option('H-5002 CO', 'H-5002 CO');
+                CEMSCyl.options[8] = new Option('H-5002 O2', 'H-5002 O2');
+                CEMSCyl.options[9] = new Option('SP Flare H2S', 'SP Flare H2S');
+                CEMSCyl.options[10] = new Option('SP Flare TRS', 'SP Flare TRS');
+                CEMSCyl.options[11] = new Option('SP Flare BTU', 'SP Flare BTU');
+                CEMSMaint.options[1] = new Option('5FCC', '5FCC');
+                CEMSMaint.options[2] = new Option('SP FG', 'SP FG');
+                CEMSMaint.options[3] = new Option('H-5002', 'H-5002');
+                CEMSMaint.options[4] = new Option('SP Flare', 'SP Flare');
+            }
+        }
+
+        function checkFirst() {
+            confirm('Are you sure?')
+        }
+
+        function btuCheck() {
+            var str = document.getElementById("CEMSCyl").value;
+            if (str.includes("BTU")){ 
+                $('#btudvH2').show();
+                $('#btudvMethane').show();
+                $('#btudvEthane').show();
+                $('#btudvEthylene').show();
+                $('#btudvPropane').show();
+                $('#btudvPropylene').show();
+                $('#btudvButane').show();
+                $('#btudvIsobutane').show();
+                $('#btudvIsobutylene').show();
+                $('#btudvPentane').show();
+                $('#btudvN2').show();
+                $('#btudvCO').show();
+                $('#btudvCO2').show();
+                document.getElementById("conc").readOnly = true;
+                var chkDiv = document.getElementById("H2dv");
+
+                if(chkDiv == null){
+            
+                    var ss = str.substring(0, str.length-4);
+
+                    var H2 = document.createElement("input");
+                    var H2conc = document.createElement("input");
+                    var H2dv = document.createElement("div");
+                    var H2concdv = document.createElement("div");
+
+                    var Methane = document.createElement("input");
+                    var Methaneconc = document.createElement("input");
+                    var Methanedv = document.createElement("div");
+                    var Methaneconcdv = document.createElement("div");
+
+                    var Ethane = document.createElement("input");
+                    var Ethaneconc = document.createElement("input");
+                    var Ethanedv = document.createElement("div");
+                    var Ethaneconcdv = document.createElement("div");
+
+                    var Ethylene = document.createElement("input");
+                    var Ethyleneconc = document.createElement("input");
+                    var Ethylenedv = document.createElement("div");
+                    var Ethyleneconcdv = document.createElement("div");
+
+                    var Propane = document.createElement("input");
+                    var Propaneconc = document.createElement("input");
+                    var Propanedv = document.createElement("div");
+                    var Propaneconcdv = document.createElement("div");
+
+                    var Propylene = document.createElement("input");
+                    var Propyleneconc = document.createElement("input");
+                    var Propylenedv = document.createElement("div");
+                    var Propyleneconcdv = document.createElement("div");
+
+                    var Butane = document.createElement("input");
+                    var Butaneconc = document.createElement("input");
+                    var Butanedv = document.createElement("div");
+                    var Butaneconcdv = document.createElement("div");
+
+                    var Isobutane = document.createElement("input");
+                    var Isobutaneconc = document.createElement("input");
+                    var Isobutanedv = document.createElement("div");
+                    var Isobutaneconcdv = document.createElement("div");
+
+                    var Isobutylene = document.createElement("input");
+                    var Isobutyleneconc = document.createElement("input");
+                    var Isobutylenedv = document.createElement("div");
+                    var Isobutyleneconcdv = document.createElement("div");
+
+                    var Pentane = document.createElement("input");
+                    var Pentaneconc = document.createElement("input");
+                    var Pentanedv = document.createElement("div");
+                    var Pentaneconcdv = document.createElement("div");
+
+                    var N2 = document.createElement("input");
+                    var N2conc = document.createElement("input");
+                    var N2dv = document.createElement("div");
+                    var N2concdv = document.createElement("div");
+
+                    var CO = document.createElement("input");
+                    var COconc = document.createElement("input");
+                    var COdv = document.createElement("div");
+                    var COconcdv = document.createElement("div");
+
+                    var CO2 = document.createElement("input");
+                    var CO2conc = document.createElement("input");
+                    var CO2dv = document.createElement("div");
+                    var CO2concdv = document.createElement("div");
+
+                    H2.setAttribute("name", "H2Cyl");
+                    H2.setAttribute("id", "H2Cyl");
+                    H2conc.setAttribute("name", "H2Conc");
+                    H2conc.setAttribute("type", "number");
+                    H2conc.setAttribute("step", "0.0001");
+                    H2dv.setAttribute("class", "form-group col-sm-2");
+                    H2dv.setAttribute("id", "H2dv");
+                    H2concdv.setAttribute("class", "form-group col-sm-2");
+                    H2concdv.setAttribute("id", "H2concdv");            
+
+                    Methane.setAttribute("name", "MethaneCyl");
+                    Methane.setAttribute("id", "MethaneCyl");
+                    Methaneconc.setAttribute("name", "MethaneConc");
+                    Methaneconc.setAttribute("type", "number");
+                    Methaneconc.setAttribute("step", "0.0001");
+                    Methanedv.setAttribute("class", "form-group col-sm-2");
+                    Methanedv.setAttribute("id", "Methanedv");
+                    Methaneconcdv.setAttribute("class", "form-group col-sm-2");
+                    Methaneconcdv.setAttribute("id", "Methaneconcdv");
+
+                    Ethane.setAttribute("name", "EthaneCyl");
+                    Ethane.setAttribute("id", "EthaneCyl");
+                    Ethaneconc.setAttribute("name", "EthaneConc");
+                    Ethaneconc.setAttribute("type", "number");
+                    Ethaneconc.setAttribute("step", "0.0001");
+                    Ethanedv.setAttribute("class", "form-group col-sm-2");
+                    Ethanedv.setAttribute("id", "Ethanedv");
+                    Ethaneconcdv.setAttribute("class", "form-group col-sm-2");
+                    Ethaneconcdv.setAttribute("id", "Ethaneconcdv");
+
+                    Ethylene.setAttribute("name", "EthyleneCyl");
+                    Ethylene.setAttribute("id", "EthyleneCyl");
+                    Ethyleneconc.setAttribute("name", "EthyleneConc");
+                    Ethyleneconc.setAttribute("type", "number");
+                    Ethyleneconc.setAttribute("step", "0.0001");
+                    Ethylenedv.setAttribute("class", "form-group col-sm-2");
+                    Ethylenedv.setAttribute("id", "Ethylenedv");
+                    Ethyleneconcdv.setAttribute("class", "form-group col-sm-2");
+                    Ethyleneconcdv.setAttribute("id", "Ethyleneconcdv");
+
+                    Propane.setAttribute("name", "PropaneCyl");
+                    Propane.setAttribute("id", "PropaneCyl");
+                    Propaneconc.setAttribute("name", "PropaneConc");
+                    Propaneconc.setAttribute("type", "number");
+                    Propaneconc.setAttribute("step", "0.0001");
+                    Propanedv.setAttribute("class", "form-group col-sm-2");
+                    Propanedv.setAttribute("id", "Propanedv");
+                    Propaneconcdv.setAttribute("class", "form-group col-sm-2");
+                    Propaneconcdv.setAttribute("id", "Propaneconcdv");
+
+                    Propylene.setAttribute("name", "PropyleneCyl");
+                    Propylene.setAttribute("id", "PropyleneCyl");
+                    Propyleneconc.setAttribute("name", "PropyleneConc");
+                    Propyleneconc.setAttribute("type", "number");
+                    Propyleneconc.setAttribute("step", "0.0001");
+                    Propylenedv.setAttribute("class", "form-group col-sm-2");
+                    Propylenedv.setAttribute("id", "Propylenedv");
+                    Propyleneconcdv.setAttribute("class", "form-group col-sm-2");
+                    Propyleneconcdv.setAttribute("id", "Propyleneconcdv");
+
+                    Butane.setAttribute("name", "ButaneCyl");
+                    Butane.setAttribute("id", "ButaneCyl");
+                    Butaneconc.setAttribute("name", "ButaneConc");
+                    Butaneconc.setAttribute("type", "number");
+                    Butaneconc.setAttribute("step", "0.0001");
+                    Butanedv.setAttribute("class", "form-group col-sm-2");
+                    Butanedv.setAttribute("id", "Butanedv");
+                    Butaneconcdv.setAttribute("class", "form-group col-sm-2");
+                    Butaneconcdv.setAttribute("id", "Butaneconcdv");
+
+                    Isobutane.setAttribute("name", "IsobutaneCyl");
+                    Isobutane.setAttribute("id", "IsobutaneCyl");
+                    Isobutaneconc.setAttribute("name", "IsobutaneConc");
+                    Isobutaneconc.setAttribute("type", "number");
+                    Isobutaneconc.setAttribute("step", "0.0001");
+                    Isobutanedv.setAttribute("class", "form-group col-sm-2");
+                    Isobutanedv.setAttribute("id", "Isobutanedv");
+                    Isobutaneconcdv.setAttribute("class", "form-group col-sm-2");
+                    Isobutaneconcdv.setAttribute("id", "Isobutaneconcdv");
+
+                    Isobutylene.setAttribute("name", "IsobutyleneCyl");
+                    Isobutylene.setAttribute("id", "IsobutyleneCyl");
+                    Isobutyleneconc.setAttribute("name", "IsobutyleneConc");
+                    Isobutyleneconc.setAttribute("type", "number");
+                    Isobutyleneconc.setAttribute("step", "0.0001");
+                    Isobutylenedv.setAttribute("class", "form-group col-sm-2");
+                    Isobutylenedv.setAttribute("id", "Isobutylenedv");
+                    Isobutyleneconcdv.setAttribute("class", "form-group col-sm-2");
+                    Isobutyleneconcdv.setAttribute("id", "Isobutyleneconcdv");
+
+                    Pentane.setAttribute("name", "PentaneCyl");
+                    Pentane.setAttribute("id", "PentaneCyl");
+                    Pentaneconc.setAttribute("name", "PentaneConc");
+                    Pentaneconc.setAttribute("type", "number");
+                    Pentaneconc.setAttribute("step", "0.0001");
+                    Pentanedv.setAttribute("class", "form-group col-sm-2");
+                    Pentanedv.setAttribute("id", "Pentanedv");
+                    Pentaneconcdv.setAttribute("class", "form-group col-sm-2");
+                    Pentaneconcdv.setAttribute("id", "Pentaneconcdv");
+
+                    CO.setAttribute("name", "COCyl");
+                    CO.setAttribute("id", "COCyl");
+                    COconc.setAttribute("name", "COConc");
+                    COconc.setAttribute("type", "number");
+                    COconc.setAttribute("step", "0.0001");
+                    COdv.setAttribute("class", "form-group col-sm-2");
+                    COdv.setAttribute("id", "COdv");
+                    COconcdv.setAttribute("class", "form-group col-sm-2");
+                    COconcdv.setAttribute("id", "COconcdv");
+
+                    CO2.setAttribute("name", "CO2Cyl");
+                    CO2.setAttribute("id", "CO2Cyl");
+                    CO2conc.setAttribute("name", "CO2Conc");
+                    CO2conc.setAttribute("type", "number");
+                    CO2conc.setAttribute("step", "0.0001");
+                    CO2dv.setAttribute("class", "form-group col-sm-2");
+                    CO2dv.setAttribute("id", "CO2dv");
+                    CO2concdv.setAttribute("class", "form-group col-sm-2");
+                    CO2concdv.setAttribute("id", "CO2concdv");
+
+                    N2.setAttribute("name", "N2Cyl");
+                    N2.setAttribute("id", "N2Cyl");
+                    N2conc.setAttribute("name", "N2Conc");
+                    N2conc.setAttribute("type", "number");
+                    N2conc.setAttribute("step", "0.0001");
+                    N2dv.setAttribute("class", "form-group col-sm-2");
+                    N2dv.setAttribute("id", "N2dv");
+                    N2concdv.setAttribute("class", "form-group col-sm-2");
+                    N2concdv.setAttribute("id", "N2concdv");
+                
+                    H2.setAttribute("value", ss + " H2");
+                    H2.setAttribute("class", "form-control");
+                    H2.setAttribute("readonly", "readonly");
+                    H2conc.setAttribute("class", "form-control");
+
+                    Methane.setAttribute("value", ss + " Methane");
+                    Methane.setAttribute("class", "form-control");
+                    Methane.setAttribute("readonly", "readonly");
+                    Methaneconc.setAttribute("class", "form-control");
+
+                    Ethane.setAttribute("value", ss + " Ethane");
+                    Ethane.setAttribute("class", "form-control");
+                    Ethane.setAttribute("readonly", "readonly");
+                    Ethaneconc.setAttribute("class", "form-control");
+
+                    Ethylene.setAttribute("value", ss + " Ethylene");
+                    Ethylene.setAttribute("class", "form-control");
+                    Ethylene.setAttribute("readonly", "readonly");
+                    Ethyleneconc.setAttribute("class", "form-control");
+
+                    Propane.setAttribute("value", ss + " Propane");
+                    Propane.setAttribute("class", "form-control");
+                    Propane.setAttribute("readonly", "readonly");
+                    Propaneconc.setAttribute("class", "form-control");
+
+                    Propylene.setAttribute("value", ss + " Propylene");
+                    Propylene.setAttribute("class", "form-control");
+                    Propylene.setAttribute("readonly", "readonly");
+                    Propyleneconc.setAttribute("class", "form-control");
+
+                    Butane.setAttribute("value", ss + " Butane");
+                    Butane.setAttribute("class", "form-control");
+                    Butane.setAttribute("readonly", "readonly");
+                    Butaneconc.setAttribute("class", "form-control");
+
+                    Isobutane.setAttribute("value", ss + " Isobutane");
+                    Isobutane.setAttribute("class", "form-control");
+                    Isobutane.setAttribute("readonly", "readonly");
+                    Isobutaneconc.setAttribute("class", "form-control");
+
+                    Isobutylene.setAttribute("value", ss + " Isobutylene");
+                    Isobutylene.setAttribute("class", "form-control");
+                    Isobutylene.setAttribute("readonly", "readonly");
+                    Isobutyleneconc.setAttribute("class", "form-control");
+
+                    Pentane.setAttribute("value", ss + " Pentane");
+                    Pentane.setAttribute("class", "form-control");
+                    Pentane.setAttribute("readonly", "readonly");
+                    Pentaneconc.setAttribute("class", "form-control");
+
+                    CO.setAttribute("value", ss + " CO");
+                    CO.setAttribute("class", "form-control");
+                    CO.setAttribute("readonly", "readonly");
+                    COconc.setAttribute("class", "form-control");
+
+                    CO2.setAttribute("value", ss + " CO2");
+                    CO2.setAttribute("class", "form-control");
+                    CO2.setAttribute("readonly", "readonly");
+                    CO2conc.setAttribute("class", "form-control");
+                    
+                    N2.setAttribute("value", ss + " N2");
+                    N2.setAttribute("class", "form-control");
+                    N2.setAttribute("readonly", "readonly");
+                    N2conc.setAttribute("class", "form-control");
+
+                    document.getElementById("btudvH2").appendChild(H2dv);
+                    document.getElementById("H2dv").appendChild(H2);
+                    document.getElementById("btudvH2").appendChild(H2concdv);
+                    document.getElementById("H2concdv").appendChild(H2conc);
+
+                    document.getElementById("btudvMethane").appendChild(Methanedv);
+                    document.getElementById("Methanedv").appendChild(Methane);
+                    document.getElementById("btudvMethane").appendChild(Methaneconcdv);
+                    document.getElementById("Methaneconcdv").appendChild(Methaneconc);
+
+                    document.getElementById("btudvEthane").appendChild(Ethanedv);
+                    document.getElementById("Ethanedv").appendChild(Ethane);
+                    document.getElementById("btudvEthane").appendChild(Ethaneconcdv);
+                    document.getElementById("Ethaneconcdv").appendChild(Ethaneconc);
+
+                    document.getElementById("btudvEthylene").appendChild(Ethylenedv);
+                    document.getElementById("Ethylenedv").appendChild(Ethylene);
+                    document.getElementById("btudvEthylene").appendChild(Ethyleneconcdv);
+                    document.getElementById("Ethyleneconcdv").appendChild(Ethyleneconc);
+
+                    document.getElementById("btudvPropane").appendChild(Propanedv);
+                    document.getElementById("Propanedv").appendChild(Propane);
+                    document.getElementById("btudvPropane").appendChild(Propaneconcdv);
+                    document.getElementById("Propaneconcdv").appendChild(Propaneconc);
+
+                    document.getElementById("btudvPropylene").appendChild(Propylenedv);
+                    document.getElementById("Propylenedv").appendChild(Propylene);
+                    document.getElementById("btudvPropylene").appendChild(Propyleneconcdv);
+                    document.getElementById("Propyleneconcdv").appendChild(Propyleneconc);
+
+                    document.getElementById("btudvButane").appendChild(Butanedv);
+                    document.getElementById("Butanedv").appendChild(Butane);
+                    document.getElementById("btudvButane").appendChild(Butaneconcdv);
+                    document.getElementById("Butaneconcdv").appendChild(Butaneconc);
+
+                    document.getElementById("btudvIsobutane").appendChild(Isobutanedv);
+                    document.getElementById("Isobutanedv").appendChild(Isobutane);
+                    document.getElementById("btudvIsobutane").appendChild(Isobutaneconcdv);
+                    document.getElementById("Isobutaneconcdv").appendChild(Isobutaneconc);
+
+                    document.getElementById("btudvIsobutylene").appendChild(Isobutylenedv);
+                    document.getElementById("Isobutylenedv").appendChild(Isobutylene);
+                    document.getElementById("btudvIsobutylene").appendChild(Isobutyleneconcdv);
+                    document.getElementById("Isobutyleneconcdv").appendChild(Isobutyleneconc);
+
+                    document.getElementById("btudvPentane").appendChild(Pentanedv);
+                    document.getElementById("Pentanedv").appendChild(Pentane);
+                    document.getElementById("btudvPentane").appendChild(Pentaneconcdv);
+                    document.getElementById("Pentaneconcdv").appendChild(Pentaneconc);
+
+                    document.getElementById("btudvCO").appendChild(COdv);
+                    document.getElementById("COdv").appendChild(CO);
+                    document.getElementById("btudvCO").appendChild(COconcdv);
+                    document.getElementById("COconcdv").appendChild(COconc);
+
+                    document.getElementById("btudvCO2").appendChild(CO2dv);
+                    document.getElementById("CO2dv").appendChild(CO2);
+                    document.getElementById("btudvCO2").appendChild(CO2concdv);
+                    document.getElementById("CO2concdv").appendChild(CO2conc);
+                    
+                    document.getElementById("btudvN2").appendChild(N2dv);
+                    document.getElementById("N2dv").appendChild(N2);
+                    document.getElementById("btudvN2").appendChild(N2concdv);
+                    document.getElementById("N2concdv").appendChild(N2conc);
+
+                } else if (str.includes("BTU")){ 
+                    var ss = str.substring(0, str.length-4);
+                    var H2 = document.getElementById("H2Cyl");
+                    var Methane = document.getElementById("MethaneCyl");
+                    var Ethane = document.getElementById("EthaneCyl");
+                    var Ethylene = document.getElementById("EthyleneCyl");
+                    var Propane = document.getElementById("PropaneCyl");
+                    var Propylene = document.getElementById("PropyleneCyl");
+                    var Butane = document.getElementById("ButaneCyl");
+                    var Isobutane = document.getElementById("IsobutaneCyl");
+                    var Isobutylene = document.getElementById("IsobutyleneCyl");
+                    var Pentane = document.getElementById("PentaneCyl");
+                    var N2 = document.getElementById("N2Cyl");
+                    var CO = document.getElementById("COCyl");
+                    var CO2 = document.getElementById("CO2Cyl");
+
+                    H2.setAttribute("value", ss + " H2");
+                    Methane.setAttribute("value", ss + " Methane");
+                    Ethane.setAttribute("value", ss + " Ethane");
+                    Ethylene.setAttribute("value", ss + " Ethylene");
+                    Propane.setAttribute("value", ss + " Propane");
+                    Propylene.setAttribute("value", ss + " Propylene");
+                    Butane.setAttribute("value", ss + " Butane");
+                    Isobutane.setAttribute("value", ss + " Isobutane");
+                    Isobutylene.setAttribute("value", ss + " Isobutylene");
+                    Pentane.setAttribute("value", ss + " Pentane");
+                    N2.setAttribute("value", ss + " N2");
+                    CO.setAttribute("value", ss + " CO");
+                    CO2.setAttribute("value", ss + " CO2");
+                } 
+
+            } else {
+                    document.getElementById("conc").readOnly = false;
+                    $('#btudvH2').hide();
+                    $('#btudvMethane').hide();
+                    $('#btudvEthane').hide();
+                    $('#btudvEthylene').hide();
+                    $('#btudvPropane').hide();
+                    $('#btudvPropylene').hide();
+                    $('#btudvButane').hide();
+                    $('#btudvIsobutane').hide();
+                    $('#btudvIsobutylene').hide();
+                    $('#btudvPentane').hide();
+                    $('#btudvN2').hide();
+                    $('#btudvCO').hide();
+                    $('#btudvCO2').hide();
+                }
+        }
+
+    </script> 
+ 
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $("#new").click(function(){
+                $("#selarea").show("slow");
+                $("#hunlog").hide("fast");
+                $("#alllog").hide("fast");
+                $("#instcyl").hide("fast");
+                $("#allcyl").hide("fast");
+                $("#cylbtndiv").hide();
+                $("#logbtndiv").hide();
+            });
+            $("#showinst").click(function(){
+                $("#allcyl").hide("fast");
+                $("#instcyl").show("fast");
+                $("#alllog").hide("fast");
+                $("#hunlog").hide("fast");
+            });
+            $("#showall").click(function(){
+                $("#instcyl").hide("fast");
+                $("#allcyl").show("fast");
+                $("#alllog").hide("fast");
+                $("#hunlog").hide("fast");
+            });
+            $("#hidecyl").click(function () {
+                $("#hunlog").hide("fast");
+                $("#alllog").hide("fast");
+                $("#instcyl").hide("fast");
+                $("#allcyl").hide("fast");
+                $("#cyleditform").hide();
+                $("#cylbtndiv").hide();
+                $("#selarea").hide();
+            });
+            $("#editcyl").click(function(){
+                $("#logbtndiv").hide();
+                $("#logeditform").hide();
+                $("#cylbtndiv").show();
+                $("#selarea").hide();
+                $("#maintlogdiv").hide();
+                $("#cyldiv").hide();
+            });
+            $("#editlog").click(function(){
+                $("#cylbtndiv").hide();
+                $("#cyleditform").hide();
+                $("#logbtndiv").show();
+                $("#selarea").hide();
+                $("#maintlogdiv").hide();
+                $("#cyldiv").hide();
+            });
+            $("#showlog").click(function(){
+                $("#alllog").hide("fast");
+                $("#hunlog").show("fast");
+                $("#instcyl").hide("fast");
+                $("#allcyl").hide("fast");
+                
+            });
+            $("#showalllog").click(function(){
+                $("#hunlog").hide("fast");
+                $("#alllog").show("fast");
+                $("#instcyl").hide("fast");
+                $("#allcyl").hide("fast");
+                
+            });
+            $("#hidelog").click(function(){
+                $("#instcyl").hide("fast");
+                $("#allcyl").hide("fast");
+                $("#hunlog").hide("fast");
+                $("#alllog").hide("fast");
+                $("#logeditform").hide();
+                $("#logbtndiv").hide();
+                $("#selarea").hide();
+            });
+        });
+    </script>
+
+    <script>
+       
+        function fillLog() {
+            $("#logeditform").show();
+            document.getElementById("idlogedit").value = arguments[0];
+            document.getElementById("CEMSMaintedit").value = arguments[1];
+            document.getElementById("maintdtedit").value = arguments[2];
+            document.getElementById("maintstrtedit").value = arguments[3];
+            document.getElementById("maintendedit").value = arguments[4];
+            document.getElementById("techmaintedit").value = arguments[5];
+            document.getElementById("maintlogedit").value = arguments[6];
+        }
+
+        function fillCyl() {
+            $("#cyleditform").show();
+            document.getElementById("idcyledit").value = arguments[0];
+            document.getElementById("CEMSCyledit").value = arguments[1];
+            document.getElementById("cylidedit").value = arguments[2];
+            document.getElementById("concedit").value = arguments[3];
+            document.getElementById("instedit").value = arguments[4];
+            document.getElementById("expedit").value = arguments[5];
+            document.getElementById("techcyledit").value = arguments[6];
+        }
+    </script>
+
+    <!-- <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script> -->
+</body>
+</html>
+
