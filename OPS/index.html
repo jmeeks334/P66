@@ -1,0 +1,1075 @@
+<!DOCTYPE HTML>
+<head> 
+    <link rel="icon" href="p66.ico" sizes="16x16" type="image/x-icon"/>
+    <title>PCR Ops Dashboard</title>
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+ <!--   <meta http-equiv="refresh" content="600"> -->
+    <script type='text/javascript' src='jquery-3.4.1.min.js'></script>
+    
+    <script type="text/javascript" src="https://public.tableau.com/javascripts/api/tableau-2.min.js"></script>
+    <script src="https://public.tableau.com/javascripts/api/tableau-2.5.0.js"></script>
+  
+
+    <script> 
+        var siteRefresh = function() { 
+            $("#div1").load("Imp.html"); 
+            let div1 = document.getElementById("div3"),
+            url1 = "https://tableau.phillips66.net/#/views/PCROPS/Dashboard1",
+            options = {
+                hideTabs: true,
+                hideToolbar: true,
+                onFirstInteractive: function() {
+                    viz1.refreshDataAsync();
+                }
+            };
+            viz1 = new tableau.Viz(div1, url1, options);
+
+            $("#div2").load("Dew.html");
+
+            let div2 = document.getElementById("div4"),
+            url2 = "https://tableau.phillips66.net/#/views/PCROPS/Dashboard2";
+            options = {
+                hideTabs: true,
+                hideToolbar: true,
+                onFirstInteractive: function() {
+                    viz2.refreshDataAsync();
+                }
+            };
+            viz2 = new tableau.Viz(div2, url2, options);
+
+    
+                
+            $("#div5").load("Econ.html")
+            $("#hits").load("SiteHits.html");
+            
+        };
+
+        $(document).ready(function() {
+            
+            siteRefresh()
+
+            $('#AChart').click(function(){
+                $("#div3").load("AChart.html");
+                $("#div4").load("AChart2.html");
+                $('#AHide').show("slow");
+                $('#AChart').hide("fast");
+            });
+            $('#AHide').click(function(){
+                $("#div3").load("CrdRtTab.html");
+                $("#div4").load("Tab2.html");
+                $('#AHide').hide("fast");
+                $('#AChart').show("fast");
+            });
+            $('#48').click(function(){
+                $("#div1").load("Imp48.html");
+                $('#24').show("slow");
+                $('html,body').delay(500).animate({
+                    scrollTop: $("#div1").offset().top},'slow');
+            });
+            $('#72').click(function(){
+                $("#div1").load("Imp72.html");
+                $('#24').show("slow");
+                $('html,body').delay(500).animate({
+                    scrollTop: $("#div1").offset().top},'slow');
+            }); 
+            $('#24').click(function(){
+                $("#div1").load("Imp.html");
+                $('#24').hide("fast");
+                $('html,body').delay(500).animate({
+                    scrollTop: $("#div1").offset().top},'slow');
+            }); 
+            $('#CV').click(function(){
+                $("#div5").hide();
+                $("#COVDiv").hide();
+                $("#vizCtrl").hide();
+                $("#vizDiv").hide();
+                $('#covizDiv').show();
+                let div3 = document.getElementById("covizDiv"),
+                    url3 = "https://tableau.phillips66.net/views/PCRCoV/CoVUSMap",
+                    options3 = {
+                    hideTabs: true,
+                    hideToolbar: true,
+            
+                    };
+
+                Coviz = new tableau.Viz(div3, url3, options3);
+
+                $('html,body').delay(500).animate({
+                    scrollTop: $("#covBut").offset().top},'slow');
+            }); 
+            $('#OpenAI').click(function(){
+                $("#div5").hide();
+                $("#COVDiv").hide();
+                $('#covizDiv').hide();
+                $("#vizDiv").show();
+                $("#vizCtrl").show();
+                let div = document.getElementById("vizDiv"),
+                    url = "https://tableau.phillips66.net/#/views/ImpactActionItems/OpenAIList",
+                    options = {
+                    hideTabs: true,
+                    hideToolbar: true,
+            
+                    };
+
+                viz = new tableau.Viz(div, url, options);
+
+                $('html,body').delay(500).animate({
+                    scrollTop: $("#vizCtrl").offset().top},'slow');
+            }); 
+            $('#CV2').click(function(){
+                $("#div5").hide();
+                $('covizDiv').hide();
+                $("#COVDiv").show();
+                $("#COVFrame").attr("src", "https://osdh.maps.arcgis.com/apps/opsdashboard/index.html#/ab1ae58c41a84249a274eb163c2e04fc");
+                $("#COVFrame").attr("height", "1000 px");
+                $('html,body').delay(500).animate({
+                    scrollTop: $("#COVDiv").offset().top},'slow');
+            }); 
+            $('#WEU').click(function(){
+                $("#div5").show();
+                $("#COVDiv").hide();
+                $("#div5").load("WeekEcon.html");
+                $('#Econ').show();
+                var dropdowns = document.getElementsByClassName("dropdown-content");
+                var i;
+                for (i = 0; i < dropdowns.length; i++) {
+                    var openDropdown = dropdowns[i];
+                    if (openDropdown.classList.contains('show')) {
+                        openDropdown.classList.remove('show');
+                    }
+                }
+                $('html,body').delay(500).animate({
+                    scrollTop: $("#div5").offset().top},'slow');
+            }); 
+            $('#PLN').click(function(){
+                $("#div5").show();
+                $("#COVDiv").hide();
+                $("#div5").load("Econ.html");
+                $('#Econ').show();
+                var dropdowns = document.getElementsByClassName("dropdown-content");
+                var i;
+                for (i = 0; i < dropdowns.length; i++) {
+                    var openDropdown = dropdowns[i];
+                    if (openDropdown.classList.contains('show')) {
+                        openDropdown.classList.remove('show');
+                    }
+                }
+                $('html,body').delay(500).animate({
+                    scrollTop: $("#Econ").offset().top},'slow');
+            });  
+
+            $('#SCP').click(function(){
+                $("#div5").show();
+                $("#COVDiv").hide();
+                $("#div5").load("STOP.html");
+                $('#Econ').show();
+                var dropdowns = document.getElementsByClassName("dropdown-content");
+                var i;
+                for (i = 0; i < dropdowns.length; i++) {
+                    var openDropdown = dropdowns[i];
+                    if (openDropdown.classList.contains('show')) {
+                        openDropdown.classList.remove('show');
+                    }
+                }
+                $('html,body').delay(500).animate({
+                    scrollTop: $("#div5").offset().top},'slow');
+            });       
+            $('#DOS').click(function(){
+                $("#div5").show();
+                $("#COVDiv").hide();
+                $("#div5").load("WkPln.html");
+                $('#Econ').show();
+                var dropdowns = document.getElementsByClassName("dropdown-content");
+                var i;
+                for (i = 0; i < dropdowns.length; i++) {
+                    var openDropdown = dropdowns[i];
+                    if (openDropdown.classList.contains('show')) {
+                        openDropdown.classList.remove('show');
+                    }
+                }
+                $('html,body').delay(500).animate({
+                    scrollTop: $("#div5").offset().top},'slow');
+            });     
+            $('#LPO').click(function(){
+                $("#div5").show();
+                $("#COVDiv").hide();
+                $("#div5").load("LPO.html");
+                $('#Econ').show();
+                var dropdowns = document.getElementsByClassName("dropdown-content");
+                var i;
+                for (i = 0; i < dropdowns.length; i++) {
+                    var openDropdown = dropdowns[i];
+                    if (openDropdown.classList.contains('show')) {
+                        openDropdown.classList.remove('show');
+                    }
+                }
+                $('html,body').delay(500).animate({
+                    scrollTop: $("#div5").offset().top},'slow');
+            });  
+            $('#MKT').click(function(){
+                $("#div5").hide();
+                $("#COVDiv").hide();
+
+                if (typeof viz !== 'undefined'){
+                    viz.dispose();
+                };
+
+                let div = document.getElementById("vizDiv");
+                div.setAttribute("style", "width:950px; height:850px;");
+                url = "https://tableau.phillips66.net/#/views/MarketTrend/CurrentMarket_1";
+                options = {
+                    hideTabs: true,
+                    hideToolbar: true,
+                };
+                viz = new tableau.Viz(div, url, options);
+                
+                $('#Econ').show();
+                var dropdowns = document.getElementsByClassName("dropdown-content");
+                var i;
+                for (i = 0; i < dropdowns.length; i++) {
+                    var openDropdown = dropdowns[i];
+                    if (openDropdown.classList.contains('show')) {
+                        openDropdown.classList.remove('show');
+                    }
+                }
+                
+            });        
+            $('#DLY').click(function(){
+                $("#div5").show();
+                $("#COVDiv").hide();
+                $("#div5").load("Plan.html");
+                $('#Econ').show();
+                var dropdowns = document.getElementsByClassName("dropdown-content");
+                var i;
+                for (i = 0; i < dropdowns.length; i++) {
+                    var openDropdown = dropdowns[i];
+                    if (openDropdown.classList.contains('show')) {
+                        openDropdown.classList.remove('show');
+                    }
+                }
+                $('html,body').delay(500).animate({
+                    scrollTop: $("#div5").offset().top},'slow');
+            }); 
+            $('#INV').click(function(){
+                $("#div5").show();
+                $("#COVDiv").hide();
+                $("#div5").load("InvTab.html");
+                $('#Econ').show();
+                var dropdowns = document.getElementsByClassName("dropdown-content");
+                var i;
+                for (i = 0; i < dropdowns.length; i++) {
+                    var openDropdown = dropdowns[i];
+                    if (openDropdown.classList.contains('show')) {
+                        openDropdown.classList.remove('show');
+                    }
+                }
+                $('html,body').delay(500).animate({
+                    scrollTop: $("#div5").offset().top},'slow');
+            });    
+            $('#SIG').click(function(){
+                window.open('http://pcr.phillips66.net/OPS/Inventory.html');
+                $('#Econ').show();
+                var dropdowns = document.getElementsByClassName("dropdown-content");
+                var i;
+                for (i = 0; i < dropdowns.length; i++) {
+                    var openDropdown = dropdowns[i];
+                    if (openDropdown.classList.contains('show')) {
+                        openDropdown.classList.remove('show');
+                    }
+                }
+                $('html,body').delay(500).animate({
+                    scrollTop: $("#div5").offset().top},'slow');
+            });    
+            $('#Missed').click(function(){
+                $("#divOIS").show("fast");
+                //$("#divOIS").load("Missed.html");
+                if (typeof viz !== 'undefined'){
+                    viz.dispose();
+                };
+
+                let div = document.getElementById("divOIS");
+                div.setAttribute("style", "width:1700px; height:800px; background-color: #f5f5f5;");
+                url = "https://tableau.phillips66.net/#/views/PCROISMissedTargets/MissedTargetTable";
+                options = {
+                    hideTabs: false,
+                    hideToolbar: true,
+                };
+                viz = new tableau.Viz(div, url, options);
+                
+                $('#LogsBut').hide("fast");
+                $("#HideMissed").show("fast");
+                $("#Missed").hide("fast");
+                $('html,body').delay(500).animate({
+                    scrollTop: $("#divOH").offset().top},'slow');
+            });    
+            $('#HideMissed').click(function(){
+                $("#divOIS").hide("slow");
+                $("#Missed").show("fast");
+                $("#HideMissed").hide("fast");
+                $('#LogsBut').show("fast");
+            });   
+            $('#LogsBut').click(function(){
+                $('#APS').show("slow");
+                $('#OLMC').show("slow");
+                $('#Missed').hide("fast");
+                $('#LogsBut').hide("fast");
+                $('#HideLogs').show("fast");
+            }) 
+            $('#HideLogs').click(function(){
+                $('#HideLogs').hide("fast");
+                $('#APS').hide("slow");
+                $('#OLMC').hide("slow");
+                $('#Missed').show("fast");
+                $('#LogsBut').show("fast");  
+                $('#divOIS').hide("slow"); 
+                $('#divLOG2').hide("fast");                
+            }) 
+            $('#APS').click(function(){
+                $('#CCAAPS').show("fast");
+                $('#EPAPS').show("fast");
+                $('#NPAPS').show("fast");
+                $('#SPAPS').show("fast");
+                $('#OMAPS').show("fast");
+                $('#CCOLMC').hide("fast");
+                $('#AOOLMC').hide("fast");
+                $('#EPOLMC').hide("fast");
+                $('#NPOLMC').hide("fast");
+                $('#SPOLMC').hide("fast");
+                $('#OMOLMC').hide("fast");
+                $('#WPOLMC').hide("fast");
+                $('#divLOG2').show("fast");                                     
+            }) 
+            $('#CCAAPS').click(function(){
+                $("#divOIS").show("fast");
+                $("#divOIS").load("CCAAPS.html");
+                $('html,body').delay(500).animate({
+                    scrollTop: $("#divOH").offset().top},'slow');
+            });  
+            $('#EPAPS').click(function(){
+                $("#divOIS").show("fast");
+                $("#divOIS").load("EPAPS.html");
+                $('html,body').delay(500).animate({
+                    scrollTop: $("#divOH").offset().top},'slow');
+            });    
+            $('#NPAPS').click(function(){
+                $("#divOIS").show("fast");
+                $("#divOIS").load("NPAPS.html");
+                $('html,body').delay(500).animate({
+                    scrollTop: $("#divOH").offset().top},'slow');
+            });    
+            $('#SPAPS').click(function(){
+                $("#divOIS").show("fast");
+                $("#divOIS").load("SPAPS.html");
+                $('html,body').delay(500).animate({
+                    scrollTop: $("#divOH").offset().top},'slow');
+            });    
+            $('#OMAPS').click(function(){
+                $("#divOIS").show("fast");
+                $("#divOIS").load("OMAPS.html");
+                $('html,body').delay(500).animate({
+                    scrollTop: $("#divOH").offset().top},'slow');
+            });     
+            $('#OLMC').click(function(){
+                $('#CCOLMC').show("fast");
+                $('#AOOLMC').show("fast");
+                $('#EPOLMC').show("fast");
+                $('#NPOLMC').show("fast");
+                $('#SPOLMC').show("fast");
+                $('#OMOLMC').show("fast");
+                $('#WPOLMC').show("fast");
+                $('#CCAAPS').hide("fast");
+                $('#EPAPS').hide("fast");
+                $('#NPAPS').hide("fast");
+                $('#SPAPS').hide("fast");
+                $('#OMAPS').hide("fast");
+                $('#divLOG2').show("fast");  
+            });     
+            $('#OMOLMC').click(function(){
+                $("#divOIS").show("fast");
+                $("#divOIS").load("OMOLMC.html");
+                $('html,body').delay(500).animate({
+                    scrollTop: $("#divOH").offset().top},'slow');
+            });  
+            $('#SPOLMC').click(function(){
+                $("#divOIS").show("fast");
+                $("#divOIS").load("SPOLMC.html");
+                $('html,body').delay(500).animate({
+                    scrollTop: $("#divOH").offset().top},'slow');
+            });  
+            $('#WPOLMC').click(function(){
+                $("#divOIS").show("fast");
+                $("#divOIS").load("WPOLMC.html");
+                $('html,body').delay(500).animate({
+                    scrollTop: $("#divOH").offset().top},'slow');
+            });  
+            $('#AOOLMC').click(function(){
+                $("#divOIS").show("fast");
+                $("#divOIS").load("AOOLMC.html");
+                $('html,body').delay(500).animate({
+                    scrollTop: $("#divOH").offset().top},'slow');
+            });  
+            $('#CCOLMC').click(function(){
+                $("#divOIS").show("fast");
+                $("#divOIS").load("CCOLMC.html");
+                $('html,body').delay(500).animate({
+                    scrollTop: $("#divOH").offset().top},'slow');
+            });  
+            $('#EPOLMC').click(function(){
+                $("#divOIS").show("fast");
+                $("#divOIS").load("EPOLMC.html");
+                $('html,body').delay(500).animate({
+                    scrollTop: $("#divOH").offset().top},'slow');
+            });     
+            $('#NPOLMC').click(function(){
+                $("#divOIS").show("fast");
+                $("#divOIS").load("NPOLMC.html");
+                $('html,body').delay(500).animate({
+                    scrollTop: $("#divOH").offset().top},'slow');
+            });  
+            $('#customDtBtn').click(function(){
+                $("#customDiv").show("fast");
+            });  
+
+            
+
+        }); 
+       
+        window.onload = function () {
+            setInterval(siteRefresh, 600000);
+            } 
+
+        function dropDown() {
+            document.getElementById("EconDrop").classList.toggle("show");
+            $('#Econ').hide();
+            $('#vizDiv').hide();
+            $('#covizDiv').hide();
+            $('#vizCtrl').hide();
+        }
+        window.onclick = function(event) {
+            if (!event.target.matches('.button3')) {
+                $('#Econ').show();
+                var dropdowns = document.getElementsByClassName("dropdown-content");
+                var i;
+                for (i = 0; i < dropdowns.length; i++) {
+                    var openDropdown = dropdowns[i];
+                    if (openDropdown.classList.contains('show')) {
+                        openDropdown.classList.remove('show');
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+    body{
+        background-color: rgba(204, 204, 204, 100);
+        color: white;
+        width: 99%;         
+    }
+  
+    figure{    
+        float:left;     
+        width: 15%;
+        text-align:left;
+        margin:0px;
+        padding:0px;
+    }
+    .pics{
+        width: 500px;       
+    }
+    .banner{
+        width: 100%;
+        max-height: 150px;
+    }
+    .h{
+        text-align:center;
+        font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+        font-size: 70px;
+        width:100%;
+        margin:10px 0 0 0;
+    }
+    .case{
+        position:absolute; 
+        bottom: 8px; 
+        top: 6%;
+        right:3%; 
+        font-family: 'Cormorant Infant', serif;
+        color:black;
+        font-size: 30pt;
+        transform: translate(-0%);
+    }
+    .butt{
+        display: flex;
+        justify-content: center;
+        padding: 10px 0 10px 0;
+    }
+    .but{
+        display: flex;
+        justify-content: center;
+        padding: 0px 0 0px 0;
+    }
+    .button{
+        background-color:dimgray;
+        border: none;
+        color: white;
+        padding: 8px 8px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 2px;
+        -webkit-transition-duration: 0.4s; /* Safari */
+        transition-duration: 0.4s;
+        cursor: pointer;   
+        border-radius:10px; 
+        margin-left: auto;
+        margin-right: auto;
+      
+    }
+    .button:hover{
+        background-color: grey;
+        color: white;
+    }
+    .button2{
+        background-color:gray;
+        border: none;
+        color: white;
+        padding: 5px 7px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 14px;
+        margin: 6px 6px;
+        -webkit-transition-duration: 0.4s; /* Safari */
+        transition-duration: 0.4s;
+        cursor: pointer;   
+        border-radius:10px; 
+        }
+        
+    .button2:hover{
+        background-color: darkgray;
+        color: black;
+    }
+    .button3{
+        background-color:gray;
+        border: none;
+        color: white;
+        padding: 8px 8px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 2px;
+        -webkit-transition-duration: 0.4s; /* Safari */
+        transition-duration: 0.4s;
+        cursor: pointer;   
+        border-radius:10px;
+        margin-left: auto;
+        margin-right: auto; 
+       
+        }
+        
+    .button3:hover{
+        background-color:darkgray;
+        color: black;
+    }
+    .button4{
+        background-color:gray;
+        border: none;
+        color: white;
+        padding: 4px 8px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 2px;
+        -webkit-transition-duration: 0.4s; /* Safari */
+        transition-duration: 0.4s;
+        cursor: pointer;   
+        border-radius:10px;
+
+        }
+        
+    .button4:hover{
+        background-color:peru;
+        color: black;
+    }
+    .button5{
+        background-color:peru;
+        border: none;
+        color: white;
+        padding: 4px 8px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 2px;
+        -webkit-transition-duration: 0.4s; /* Safari */
+        transition-duration: 0.4s;
+        cursor: pointer;   
+        border-radius:10px;
+
+        }
+        
+    .button5:hover{
+        background-color:peru;
+        color: black;
+    }
+    .sec{
+        display: flex;
+        justify-content: center;
+        margin: auto;
+    }
+
+    .sec h{
+        background-color:red;
+        font-size: 14pt;
+        font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    }
+    .tabh{
+        text-decoration:underline;
+        font-weight: bold;
+        font-size: 16pt;
+        color:black;
+    }
+
+    .dropdown-content {
+        display: none;
+        background-color: #gray;
+        min-width: 160px;
+        overflow: auto;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        z-index: 1;
+    }
+
+    .dropdown-content button{
+        display:block;
+    }
+    .show {display: block;}
+
+    label{
+        color:black;
+        font-size: 12pt;
+        font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+        padding-right: 10px;
+    }
+    .tbl{
+        background-color:grey;
+        font-size: 12pt;
+        font-family:"Trebuchet MS", Helvetica, sans-serif;
+        width:100%;
+        padding-top:2px;
+        padding-bottom:2px;
+        align-content: center;
+
+    }
+    .tbl td{
+        font-size:10pt;
+       
+        
+    }
+    .tbl li{
+        margin-left:0;
+        padding-left:50px;
+    }
+    
+
+    </style>
+</head>
+<body>
+
+    <div style="position:relative; text-align:center; padding-bottom: 0px; ">
+        <a href="https://phillips66.sharepoint.com/sites/PoncaRefinery" target="_blank"><img class="banner" src="PCRpano.bmp" alt="Alter Everything!"></a>
+        <div class="case">PCR Ops Dashboard</div>
+    </div> 
+   <!-- <div class="tbl">
+        <table style="margin:auto;">
+        <tr><th>Check out the new OIS target dashboard.</th></tr>
+        <tr><td><li>Values are updated every 10 min.</li></td></tr>
+        </table>
+    </div> -->
+    <div style="position:relative; text-align:center; height: 60px;">
+        <input type="button" id="FL" class="button2" onclick="location.href='http://pcr.phillips66.net/Env';" value="ENV Dashboard"/>
+        <input type="button" id="FL" class="button2" onclick="location.href='http://pcr.phillips66.net/ARG';" value="ARG Dashboard"/>
+        <input type="button" id="FL" class="button2" onclick="location.href='http://pcr.phillips66.net/Mtc';" value="MTC Dashboard"/>
+        <!-- <div style="color:black; font-size:10pt; display:flex; justify-content:flex-end; transform: translate(0, -175%);">
+            Site best viewed in Google Chrome browser.
+        </div> -->
+        <div style="color:black; display:flex; justify-content:flex-end; transform: translate(0, -75%);">
+            <a href="http://awsponwbip4591/suggestions" style="font-size:10pt; color:black; text-align:right; ">Comments/Suggestions</a>
+        </div>  
+    </div> 
+    
+    <hr style="margin:0 0 10px 0">
+    <div class="sec" >
+    
+    </div> 
+
+    <div><script src='plotly.min.19.1.50031.js'></script><script src='md5.min.js'></script></div>
+    
+    <div id="div1" class="sec"></div>
+    <div class="sec">
+        <button id="24" class="button2" style="display:none">24h</button>
+        <button id="48" class="button2">48h</button>
+        <button id="72" class="button2">72h</button>
+        <button id="OpenAI" class="button4">Open Action Items</button>
+        <button id="IMP" class="button2" onclick="window.open('https://impact.phillips66.net/Impact/anywhere/Default.aspx#');">Go To Impact</button> 
+
+    </div>
+    <br>
+    <div id="div2" class="sec"></div>
+    <br>
+    <div id="divOH" class="sec" style="font-size:14pt; color:black; padding: 0 0 5px 0;"><u><b>OIS</b></u></div>
+    <div class="sec">
+        <button id="Missed" class="button" style="background-color:darkslategrey">Show Missed Targets</button>
+        <button id="HideMissed" class="button" style="display:none">Hide Missed Targets</button>
+        <!-- <button id="LogsBut" class="button2">Logs</button>
+        <button id="HideLogs" class="button" style="display:none">Hide Logs</button> -->
+    </div>
+    <div id="divLOG" class="sec">
+        <button id="APS" class="button2" style="display:none">APS</button>
+        <button id="OLMC" class="button2"style="display:none">OLMC</button>
+    </div>
+    <div id="divLOG2" class="sec">
+        <button id="CCAAPS" class="button2"style="display:none">CCA</button>
+        <button id="EPAPS" class="button2" style="display:none">EP</button>
+        <button id="NPAPS" class="button2"style="display:none">NP/WP</button>
+        <button id="SPAPS" class="button2" style="display:none">SP</button>
+        <button id="OMAPS" class="button2" style="display:none">OM</button>
+        <button id="CCOLMC" class="button2"style="display:none">CC</button>
+        <button id="AOOLMC" class="button2"style="display:none">AO</button>
+        <button id="EPOLMC" class="button2" style="display:none">EP</button>
+        <button id="NPOLMC" class="button2"style="display:none">NP</button>
+        <button id="WPOLMC" class="button2"style="display:none">WP</button>
+        <button id="SPOLMC" class="button2" style="display:none">SP</button>
+        <button id="OMOLMC" class="button2" style="display:none">OM</button>
+    </div>
+    <div id="divOIS" class="sec" style="margin:auto; background-color: #f5f5f5;"></div> 
+    <br>
+    <!-- <hr> 
+    <div class="sec">
+        <input type="button" id="kpi" class="button2" onclick="location.href='http://pcr.phillips66.net/ops/kpi';" value="6HDT KPIs"/>
+    </div> --> 
+    <hr>
+    <div class="sec">
+        <table style="border-style:solid; border-color: black;">
+            <tr><th colspan="4" style="color:black; padding-bottom:10px;">Adjust Timeframe</th></tr>
+            <tr><td><input type="button" onclick="today()" class="button4" value="Today"/></td>
+            <td><input type="button" onclick="lastTwentyFour()" class="button4" value="Last 24 hrs"/></td>
+            <td><input type="button" onclick="lastFour()" class="button4" value="Last 4 hrs"/></td>
+            <td><input type="button" id="customDtBtn" class="button4" value="Custom Time"/></td></tr>
+            <tr><td colspan="4">
+                <div id="customDiv" style="display: none;">
+                    <div class="sec" style="padding:10px;">
+                        <label for="startDt">Start:</label>
+                        <input type="date" id="startDt"/>
+                        <input type="time" id="startTime" value="00:00"/>
+                    </div>
+                    <div class="sec">
+                        <label for="end">End:</label>
+                        <input type="date" id="endDt"/>
+                        <input type="time" id="endTime" value="00:00"/>
+                    </div>
+                    <div class="sec">
+                        <input type="button" onclick="customDate()" value="Submit"/>
+                    </div>
+                </div>
+            </td></tr>
+        </table>
+    </div>
+    <div id="div3" class="sec" style='width: 950px; height: 2475px; margin:auto'></div>
+    <br>
+    <div id="div4" class="sec"style='width: 950px; height: 1400px; margin:auto'></div>
+    <br>
+   <!-- <div class="sec" id="covBut">
+        <button id="CV" class="button4">COVID-19 Cases</button>
+        <button id="CV2" class="button4">OSDH</button>
+    </div> -->
+    <div class="sec">
+         
+        <button onclick='dropDown()' class="button3" id="Econ">Economics</button>
+        <div id="EconDrop" class="dropdown-content">
+      <!--  <button id="LPO" class="button">Daily LPO</button> -->
+            <button id ="PLN" class="button">Operating Plan</button>
+            <button id="SIG" class="button">Sigmafine Report</button>
+      <!--  <button id="INV" class="button">Inventory Trends</button>  -->
+            <button id="MKT" class="button">Market Trends</button>
+            <button id="DLY" class="button">Daily OPS Status</button>
+            <button id="SCP" class="button">STOP Clean Products Update</button>
+       <!-- <button id="DOS" class="button">Weekly Plan</button>            
+            <button id="WEU" class="button">Weekly Economics Update</button> -->
+        </div>
+        
+    </div>
+    <div id="COVDiv" class="sec" style="display:none">
+        <iframe id="COVFrame" src="" width="100%" height=""></iframe>
+    </div>
+    <div id="div5" class="sec"></div>
+    <br>
+    <div id="vizCtrl" style="display:none" class="sec">
+        <input type="button" onclick="window.open('https://tableau.phillips66.net/#/views/ImpactActionItems/List.csv')" class="button5" value="Download Data"/>
+        <input type="button" onclick="allAI()" class="button2" value="Show All"/>
+        <input type="button" onclick="thisMnth()" class="button2" value="Due This Month"/>
+        <input type="button" onclick="nextMnth()" class="button2" value="Due Next Month"/>
+        <input type="button" onclick="thisYr()" class="button2" value="Due This Year"/>
+        <input type="button" onclick="lateAI()" class="button2" value="Late"/>
+        <input type="button" onclick="newAI()" class="button2" value="Assigned Last 30d"/>
+       <!-- <input type="button" onclick="chk()" class="button4" value="chk"/> -->
+    </div>
+    <div id="vizDiv" class="sec" style="width:1200px; height:2800px; margin:auto; display:none;"></div>
+    <div id="covizDiv" class="sec" style="width:950px; height:1800px; margin:auto; display:none;"></div>    
+
+    
+    <br>
+
+    <script>
+// Tableau scripts for open action item dashboard
+
+        var worksheet;
+        var lastDay;
+        var thisMonth = new Date().getMonth();
+        var nextMonth = thisMonth + 1;
+        var thisYear = new Date().getFullYear();
+        var thisDay = new Date().getDate();
+        var thisHour = new Date().getHours();
+        var thisMinute = new Date().getMinutes();
+
+        if ([0,2,4,6,7,9,11].includes(thisMonth)) {
+            lastDay = 31
+        } else if ([3,5,8,10].includes(thisMonth)) {
+            lastDay = 30
+        } else {
+            lastDay = 28
+        }
+   
+        function thisMnth() {
+            var sheet = viz.getWorkbook().getActiveSheet();
+            var worksheetArray = sheet.getWorksheets();
+
+            for (var i = 0; i < worksheetArray.length; i++) {
+                worksheetArray[i].applyRangeFilterAsync("Target Date", {
+                    min: new Date (thisYear, thisMonth, 1),
+                    max: new Date (thisYear, thisMonth, lastDay)
+                });
+                worksheetArray[i].applyRangeFilterAsync("Date Created", {
+                    min: new Date (1900, 0, 1),
+                    max: new Date (thisYear, thisMonth, thisDay)
+                });
+            }
+            viz.getWorkbook().activateSheetAsync("Open AI List");
+        }
+
+        function thisYr() {
+            var sheet = viz.getWorkbook().getActiveSheet();
+            var worksheetArray = sheet.getWorksheets();
+
+            for (var i = 0; i < worksheetArray.length; i++) {
+                worksheetArray[i].applyRangeFilterAsync("Target Date", {
+                    min: new Date (thisYear, thisMonth, thisDay),
+                    max: new Date (thisYear, 11, 31)
+                });
+                worksheetArray[i].applyRangeFilterAsync("Date Created", {
+                    min: new Date (1900, 0, 1),
+                    max: new Date (thisYear, thisMonth, thisDay)
+                });
+            }
+            viz.getWorkbook().activateSheetAsync("Open AI List");
+        }
+
+        function nextMnth() {
+
+            var sheet = viz.getWorkbook().getActiveSheet();
+            var worksheetArray = sheet.getWorksheets();
+
+            for (var i = 0; i < worksheetArray.length; i++) {
+                worksheetArray[i].applyRangeFilterAsync("Date Created", {
+                    min: new Date (1900, 0, 1),
+                    max: new Date (thisYear, thisMonth, thisDay)
+                });
+                if (thisMonth == 11) {
+                    worksheetArray[i].applyRangeFilterAsync("Target Date", {
+                        min: new Date (thisYear+1, 0, 1),
+                        max: new Date (thisYear+1, 1, 28)
+                   });
+                } else {
+                    worksheetArray[i].applyRangeFilterAsync("Target Date", {
+                        min: new Date (thisYear, nextMonth, 1),
+                        max: new Date (thisYear, nextMonth, lastDay)
+                   })};
+            }
+            viz.getWorkbook().activateSheetAsync("Open AI List");
+        }
+            
+
+        function allAI() {
+            var sheet = viz.getWorkbook().getActiveSheet();
+            var worksheetArray = sheet.getWorksheets();
+
+            for (var i = 0; i < worksheetArray.length; i++) {
+                worksheetArray[i].applyRangeFilterAsync("Target Date", {
+                    min: new Date (1900, 0, 1),
+                    max: new Date (thisYear+100, 0, 1)
+                });
+                worksheetArray[i].applyRangeFilterAsync("Date Created", {
+                    min: new Date (1900, 0, 1),
+                    max: new Date (thisYear, thisMonth, thisDay)
+                });
+            }
+            viz.getWorkbook().activateSheetAsync("Open AI List");
+        }
+
+
+        function lateAI() {
+            var sheet = viz.getWorkbook().getActiveSheet();
+            var worksheetArray = sheet.getWorksheets();
+
+            for (var i = 0; i < worksheetArray.length; i++) {
+                worksheetArray[i].applyRangeFilterAsync("Target Date", {
+                    min: new Date (1900, 0, 1),
+                    max: new Date (thisYear, thisMonth, thisDay)
+                });
+                worksheetArray[i].applyRangeFilterAsync("Date Created", {
+                    min: new Date (1900, 0, 1),
+                    max: new Date (thisYear, thisMonth, thisDay)
+                });
+            }
+            viz.getWorkbook().activateSheetAsync("Open AI List");
+        }
+
+        function newAI() {
+            var sheet = viz.getWorkbook().getActiveSheet();
+            var worksheetArray = sheet.getWorksheets();
+
+            for (var i = 0; i < worksheetArray.length; i++) {
+                worksheetArray[i].applyRangeFilterAsync("Target Date", {
+                    min: new Date (1900, 0, 1),
+                    max: new Date (thisYear+100, thisMonth, thisDay)
+                });
+                if (thisMonth == 0) {
+                    worksheetArray[i].applyRangeFilterAsync("Date Created", {
+                        min: new Date (thisYear-1, 11, thisDay),
+                        max: new Date (thisYear, thisMonth, thisDay)
+                   });
+                } else {
+                    worksheetArray[i].applyRangeFilterAsync("Date Created", {
+                        min: new Date (thisYear, thisMonth-1, thisDay),
+                        max: new Date (thisYear, thisMonth, thisDay)
+                   })};
+            }
+            viz.getWorkbook().activateSheetAsync("Open AI List");
+        }
+
+
+//Scripts for ops dashboards
+
+        function lastFour() {
+            var sheet1 = viz1.getWorkbook().getActiveSheet();
+            var worksheetArray1 = sheet1.getWorksheets();
+            var sheet2 = viz2.getWorkbook().getActiveSheet();
+            var worksheetArray2 = sheet2.getWorksheets();
+            for (var i = 0; i < worksheetArray1.length; i++) {
+                worksheetArray1[i].applyRangeFilterAsync("Timestamp", {
+                    min: new Date (Date.UTC(thisYear, thisMonth, thisDay, thisHour-4, thisMinute)),
+                    max: new Date (Date.UTC(thisYear, thisMonth, thisDay, thisHour, thisMinute))
+                })
+            }
+            for (var i = 0; i < worksheetArray2.length; i++) {
+                worksheetArray2[i].applyRangeFilterAsync("Timestamp", {
+                    min: new Date (Date.UTC(thisYear, thisMonth, thisDay, thisHour-4, thisMinute)),
+                    max: new Date (Date.UTC(thisYear, thisMonth, thisDay, thisHour, thisMinute))
+                })
+            }
+           
+            viz1.getWorkbook().activateSheetAsync("PCR OPS 1");
+            viz2.getWorkbook().activateSheetAsync("PCR OPS 2");
+
+            }
+
+        function lastTwentyFour() {
+            var sheet1 = viz1.getWorkbook().getActiveSheet();
+            var worksheetArray1 = sheet1.getWorksheets();
+            var sheet2 = viz2.getWorkbook().getActiveSheet();
+            var worksheetArray2 = sheet2.getWorksheets();
+            for (var i = 0; i < worksheetArray1.length; i++) {
+                worksheetArray1[i].applyRangeFilterAsync("Timestamp", {
+                    min: new Date (thisYear, thisMonth, thisDay-1, thisHour, thisMinute),
+                    max: new Date (thisYear, thisMonth, thisDay, thisHour, thisMinute)
+                })
+            }
+            for (var i = 0; i < worksheetArray2.length; i++) {
+                worksheetArray2[i].applyRangeFilterAsync("Timestamp", {
+                    min: new Date (thisYear, thisMonth, thisDay-1, thisHour, thisMinute),
+                    max: new Date (thisYear, thisMonth, thisDay, thisHour, thisMinute)
+                })
+            }
+           
+            viz1.getWorkbook().activateSheetAsync("PCR OPS 1");
+            viz2.getWorkbook().activateSheetAsync("PCR OPS 2");
+
+            }
+
+        function today() {
+            var sheet1 = viz1.getWorkbook().getActiveSheet();
+            var worksheetArray1 = sheet1.getWorksheets();
+            var sheet2 = viz2.getWorkbook().getActiveSheet();
+            var worksheetArray2 = sheet2.getWorksheets();
+            for (var i = 0; i < worksheetArray1.length; i++) {
+                worksheetArray1[i].applyRangeFilterAsync("Timestamp", {
+                    min: new Date (thisYear, thisMonth, thisDay, 0, 0),
+                    max: new Date (thisYear, thisMonth, thisDay, thisHour, thisMinute)
+                })
+            }
+            for (var i = 0; i < worksheetArray2.length; i++) {
+                worksheetArray2[i].applyRangeFilterAsync("Timestamp", {
+                    min: new Date (thisYear, thisMonth, thisDay, 0, 0),
+                    max: new Date (thisYear, thisMonth, thisDay, thisHour, thisMinute)
+                })
+            }
+           
+            viz1.getWorkbook().activateSheetAsync("PCR OPS 1");
+            viz2.getWorkbook().activateSheetAsync("PCR OPS 2");
+
+            }
+
+
+        function customDate() {
+            console.log(startDt.value+" "+startTime.value)
+            console.log(endDt.value+" "+endTime.value)
+
+            var st = startDt.value+" "+startTime.value+":00.000"
+            var ed = endDt.value+" "+endTime.value+":00.000"
+            var sheet1 = viz1.getWorkbook().getActiveSheet();
+            var worksheetArray1 = sheet1.getWorksheets();
+            var sheet2 = viz2.getWorkbook().getActiveSheet();
+            var worksheetArray2 = sheet2.getWorksheets();
+            for (var i = 0; i < worksheetArray1.length; i++) {
+                worksheetArray1[i].applyRangeFilterAsync("Timestamp", {
+                    min: st,
+                    max: ed
+                })
+            }
+            for (var i = 0; i < worksheetArray2.length; i++) {
+                worksheetArray2[i].applyRangeFilterAsync("Timestamp", {
+                    min: st,
+                    max: ed
+                })
+            }
+           
+            viz1.getWorkbook().activateSheetAsync("PCR OPS 1");
+            viz2.getWorkbook().activateSheetAsync("PCR OPS 2");
+
+            }
+    
+
+    </script>
+
+    <br>
+    <hr style="margin: 0 0 5px 0;">
+    
+    <div id="hits"></div>
+    
+    <!-- <br><br><div style="font-size: 8pt; font-style:italic; text-align:center;"> &copy 2019 Jeremy C. Meeks</div> -->
+    
+</body>
